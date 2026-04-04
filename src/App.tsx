@@ -1,6 +1,6 @@
 import type React from "react";
 import { useEffect } from "react";
-import { BrowserRouter, useLocation, useNavigate } from "react-router";
+import { HashRouter, useLocation, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import TranslationPage from "./pages/TranslationPage";
 
@@ -82,7 +82,7 @@ function App() {
 }
 
 export default () => (
-  <BrowserRouter>
+  <HashRouter>
     <App />
-  </BrowserRouter>
+  </HashRouter>
 );
