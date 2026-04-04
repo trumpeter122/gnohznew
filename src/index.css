@@ -1,14 +1,14 @@
 @import "../styles/globals.css";
 
-@layer base {
-  :root {
-    @apply font-sans;
-  }
-
-  body {
-    @apply grid place-items-center min-w-[320px] min-h-screen relative m-0 bg-background text-foreground;
-  }
-}
+/* @layer base { */
+/*   :root { */
+/*     @apply font-sans; */
+/*   } */
+/**/
+/*   body { */
+/*     @apply grid place-items-center min-w-[320px] min-h-screen relative m-0 bg-background text-foreground; */
+/*   } */
+/* } */
 
 /* cool Bun background animation 😎 */
 body::before {
@@ -17,7 +17,7 @@ body::before {
   inset: 0;
   z-index: -1;
   opacity: 0.05;
-  background: url("./logo.svg");
+  background: url("./gn-logo.svg");
   background-size: 256px;
   transform: rotate(-12deg) scale(1.35);
   animation: slide 30s linear infinite;
@@ -46,6 +46,6 @@ body::before {
   *,
   ::before,
   ::after {
-    animation: none !important;
+    animation: none;
   }
 }

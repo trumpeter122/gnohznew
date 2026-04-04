@@ -1,39 +1,88 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { APITester } from "./APITester";
+import type React from "react";
+import { useEffect } from "react";
+import { BrowserRouter, useLocation, useNavigate } from "react-router";
+import { Button } from "@/components/ui/button";
+import TranslationPage from "./pages/TranslationPage";
+
 import "./index.css";
+import { useState } from "react";
+import AboutPage from "./pages/AboutPage";
+import HomePage from "./pages/HomePage";
 
-import logo from "./logo.svg";
-import reactLogo from "./react.svg";
+const PAGE_NAMES = ["Home", "About", "Translation"] as const;
 
-export function App() {
+type PageName = (typeof PAGE_NAMES)[number];
+
+const PAGES: {
+  [k in PageName]: {
+    route: string;
+    component: React.ReactElement;
+    hide?: boolean;
+  };
+} = {
+  Home: {
+    route: "/home",
+    component: <HomePage />,
+    hide: true,
+  },
+  About: {
+    route: "/about",
+    component: <AboutPage />,
+  },
+  Translation: {
+    route: "/translation",
+    component: <TranslationPage />,
+  },
+};
+
+function App() {
+  const [page, setPage] = useState<PageName>(PAGE_NAMES[0]);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    for (const [k, v] of Object.entries(PAGES)) {
+      if (location.pathname === v.route) {
+        setPage(k as PageName);
+        return;
+      }
+    }
+    navigate(PAGES.Home.route);
+  }, [location, navigate]);
+
   return (
-    <div className="container mx-auto p-8 text-center relative z-10">
-      <div className="flex justify-center items-center gap-8 mb-8">
-        <img
-          src={logo}
-          alt="Bun Logo"
-          className="h-36 p-6 transition-all duration-300 hover:drop-shadow-[0_0_2em_#646cffaa] scale-120"
-        />
-        <img
-          src={reactLogo}
-          alt="React Logo"
-          className="h-36 p-6 transition-all duration-300 hover:drop-shadow-[0_0_2em_#61dafbaa] [animation:spin_20s_linear_infinite]"
-        />
-      </div>
-      <Card>
-        <CardHeader className="gap-4">
-          <CardTitle className="text-3xl font-bold">Bun + React</CardTitle>
-          <CardDescription>
-            Edit <code className="rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono">src/App.tsx</code> and save to
-            test HMR
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <APITester />
-        </CardContent>
-      </Card>
+    <div className="min-h-screen flex flex-col bg-background/66 text-foreground ">
+      <header className="sticky top-0 z-50 w-full p-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-linear-to-r md:bg-linear-to-b from-background via-70% via-background/70 to-background/0">
+        <button
+          className="text-center text-5xl font-extrabold tracking-tight text-balance text-accent cursor-default"
+          onClick={() => {
+            navigate(PAGES.Home.route);
+          }}
+        >
+          Gnōhznéw
+        </button>
+        <nav className="flex flex-row align-center gap-3">
+          {PAGE_NAMES.filter((p) => !PAGES[p].hide).map((p) => (
+            <Button
+              key={p}
+              variant={page === p ? "link" : "ghost"}
+              className={page === p ? "underline" : ""}
+              onClick={() => {
+                navigate(PAGES[p].route);
+              }}
+            >
+              {p}
+            </Button>
+          ))}
+        </nav>
+      </header>
+      <main className="flex-1 p-9 flex flex-col">{PAGES[page].component}</main>
     </div>
   );
 }
 
-export default App;
+export default () => (
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
