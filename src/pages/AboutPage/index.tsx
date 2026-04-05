@@ -3,7 +3,7 @@ import Markdown from "react-markdown";
 export default () => {
   return (
     <div className="flex-1 flex flex-col items-center">
-      <article className="prose text-secondary-foreground">
+      <article className="w-full prose text-secondary-foreground">
         <Markdown>
           {`
 # About

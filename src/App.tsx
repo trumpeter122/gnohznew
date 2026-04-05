@@ -51,30 +51,34 @@ function App() {
   }, [location, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background/66 text-foreground ">
-      <header className="sticky top-0 z-50 w-full p-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-linear-to-r md:bg-linear-to-b from-background via-70% via-background/70 to-background/0">
-        <button
-          className="text-center text-5xl font-extrabold tracking-tight text-balance text-accent cursor-default"
-          onClick={() => {
-            navigate(PAGES.Home.route);
-          }}
-        >
-          Gnōhznéw
-        </button>
-        <nav className="flex flex-row align-center gap-3">
-          {PAGE_NAMES.filter((p) => !PAGES[p].hide).map((p) => (
-            <Button
-              key={p}
-              variant={page === p ? "link" : "ghost"}
-              className={page === p ? "underline" : ""}
-              onClick={() => {
-                navigate(PAGES[p].route);
-              }}
-            >
-              {p}
-            </Button>
-          ))}
-        </nav>
+    <div className="h-dvh flex flex-col bg-background/66 text-foreground overflow-x-auto overscroll-none">
+      <header className="sticky top-0 z-50 w-full flex flex-col">
+        <div className="p-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-background">
+          <button
+            type="button"
+            className="text-center text-5xl font-extrabold tracking-tight text-balance text-accent cursor-default"
+            onClick={() => {
+              navigate(PAGES.Home.route);
+            }}
+          >
+            Gnōhznéw
+          </button>
+          <nav className="flex flex-row align-center gap-3">
+            {PAGE_NAMES.filter((p) => !PAGES[p].hide).map((p) => (
+              <Button
+                key={p}
+                variant={page === p ? "link" : "ghost"}
+                className={page === p ? "underline" : ""}
+                onClick={() => {
+                  navigate(PAGES[p].route);
+                }}
+              >
+                {p}
+              </Button>
+            ))}
+          </nav>
+        </div>
+        <div className="h-10 w-full bg-linear-to-b from-background to-background/0" />
       </header>
       <main className="flex-1 p-9 flex flex-col">{PAGES[page].component}</main>
     </div>
