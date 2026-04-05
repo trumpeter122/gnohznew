@@ -3,6 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -13,12 +14,12 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
-
 import type { ToneType } from "@/lib/translation";
 import { getGnohznewFromChinese, toneTypes } from "@/lib/translation";
 
 type TranslationParams = {
   toneType: ToneType;
+  separator: string;
 };
 
 type SpeechSynthesisParams = {
@@ -29,16 +30,9 @@ type SpeechSynthesisParams = {
 };
 
 export default () => {
-  const [defaultSpeechSynthesisParams, setDefaultSpeechSynthesisParams] =
-    useState({
-      lang: "",
-      volume: 1,
-      rate: 1,
-      pitch: 1,
-    });
-
   const defaultTranslationParams = {
     toneType: toneTypes[0],
+    separator: " ",
   };
 
   const [textInput, setTextInput] = useState("");
@@ -46,6 +40,13 @@ export default () => {
   const [speechSynthesisLangs, setSpeechSynthesisLangs] = useState<string[]>(
     [],
   );
+  const [defaultSpeechSynthesisParams, setDefaultSpeechSynthesisParams] =
+    useState({
+      lang: "",
+      volume: 1,
+      rate: 1,
+      pitch: 1,
+    });
   const [translationParams, setTranslationParams] = useState<TranslationParams>(
     defaultTranslationParams,
   );
@@ -73,7 +74,11 @@ export default () => {
 
   const handleTranslate = () => {
     setTextOutput(
-      getGnohznewFromChinese(textInput, translationParams.toneType),
+      getGnohznewFromChinese(
+        textInput,
+        translationParams.toneType,
+        translationParams.separator,
+      ),
     );
   };
 
@@ -173,6 +178,17 @@ export default () => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
+              <FieldLabel htmlFor="separator">Separator</FieldLabel>
+              <Input
+                id="separator"
+                value={translationParams.separator}
+                onChange={(e) => {
+                  setTranslationParams({
+                    ...translationParams,
+                    separator: e.target.value,
+                  });
+                }}
+              />
             </Field>
             <Field>
               <FieldLabel htmlFor="speech-synthesis-lang">Dialect</FieldLabel>
