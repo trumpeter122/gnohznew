@@ -31,6 +31,7 @@ export const getPinyinFromChinese = (
 export const getGnohznewFromChinese = (
   chineseText: string,
   toneType: ToneType,
+  seperator: string,
 ) => {
   const tokens = getTokensFromChinese(chineseText);
   const tokenSyllables = tokens.map((t) =>
@@ -56,7 +57,7 @@ export const getGnohznewFromChinese = (
       currentToken?.isGnohznew &&
       nextToken?.isGnohznew
     ) {
-      gnohznewText += " ";
+      gnohznewText += seperator;
     }
   }
 
