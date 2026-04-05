@@ -96,7 +96,7 @@ For better readability, words are separated with spaces as is often done in alph
 
 Though spelled backwards, it is recommended to preserve the tones of the syllables while speaking, in order to achive better understandability.
 
-There is no fixed pronunciation rule for Gnohznew. Often times, speakers would adopted rules from other languages. These different pronunciations of Gnohznew are referred to as __*dialects*__. Below is an example from Leslie, one of the founders of Gnohznew.
+There is no fixed pronunciation rule for Gnohznew. Often times, speakers would adopt rules from other languages. These different pronunciations of Gnohznew are referred to as __*dialects*__. Below is an example from Leslie, one of the founders of Gnohznew.
 
 > ### Gnohznew 的发音规则
 >
@@ -131,5 +131,5 @@ There is no fixed pronunciation rule for Gnohznew. Often times, speakers would a
 > 换句话说，这类组合的读法具有特殊性，可以视为约定俗成的例外。
 `})})})};var bD=()=>{return _("div",{className:"flex-1 flex flex-col justify-start md:justify-center items-center",children:F0("div",{className:"leading-15 md:leading-30 text-[clamp(1rem,3vw,3rem)] md:text-2xl font-bold italic text-foreground",children:[_("p",{className:"font-serif text-[clamp(1rem,15vw,9rem)] font-black not-italic text-shadow-lg/100 text-shadow-accent",children:"Gnohznew"}),_(f3,{className:"mt-9 md:mt-20 mb-5 md:mb-12"}),_("p",{children:"The most reversed language in the world."}),_("p",{children:"世界上最倒着的语言。"}),_("p",{children:"Ihseijgnahs iuz oadehz ed uynay。"})]})})};var _D=["Home","About","Translation"],c7={Home:{route:"/home",component:_(bD,{}),hide:!0},About:{route:"/about",component:_(DD,{})},Translation:{route:"/translation",component:_($V,{})}};function hE(){let[w,Z]=OD.useState(_D[0]),J=w5(),G=FZ();return jD.useEffect(()=>{for(let[X,Y]of Object.entries(c7))if(J.pathname===Y.route){Z(X);return}G(c7.Home.route)},[J,G]),F0("div",{className:"h-dvh flex flex-col bg-background/66 text-foreground overflow-x-auto overscroll-none",children:[F0("header",{className:"sticky top-0 z-50 w-full flex flex-col",children:[F0("div",{className:"p-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-background",children:[_("button",{type:"button",className:"text-center text-5xl font-extrabold tracking-tight text-balance text-accent cursor-default",onClick:()=>{G(c7.Home.route)},children:"Gnōhznéw"}),_("nav",{className:"flex flex-row align-center gap-3",children:_D.filter((X)=>!c7[X].hide).map((X)=>_(D6,{variant:w===X?"link":"ghost",className:w===X?"underline":"",onClick:()=>{G(c7[X].route)},children:X},X))})]}),_("div",{className:"h-10 w-full bg-linear-to-b from-background to-background/0"})]}),_("main",{className:"flex-1 p-9 flex flex-col",children:c7[w].component})]})}var TD=()=>_(BQ,{children:_(hE,{})});var SE=document.getElementById("root"),gE=_(RD.StrictMode,{children:_(TD,{})});ID.createRoot(SE).render(gE);
 
-//# debugId=FD9D3EAB8295836164756E2164756E21
-//# sourceMappingURL=chunk-brrb2myc.js.map
+//# debugId=0AE35FDC866A084764756E2164756E21
+//# sourceMappingURL=chunk-a0qamj5n.js.map
