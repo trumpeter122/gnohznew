@@ -29,20 +29,13 @@ type SpeechSynthesisParams = {
 };
 
 export default () => {
-  const speechSynthesisLangs = window.speechSynthesis
-    .getVoices()
-    .map((v) => v.lang)
-    .toSorted();
-
-  const defaultSpeechSynthesisLang = speechSynthesisLangs[0];
-  if (defaultSpeechSynthesisLang === undefined)
-    throw Error("No available speech synthesis language found");
-  const defaultSpeechSynthesisParams = {
-    lang: defaultSpeechSynthesisLang,
-    volume: 1,
-    rate: 1,
-    pitch: 1,
-  };
+  const [defaultSpeechSynthesisParams, setDefaultSpeechSynthesisParams] =
+    useState({
+      lang: "",
+      volume: 1,
+      rate: 1,
+      pitch: 1,
+    });
 
   const defaultTranslationParams = {
     toneType: toneTypes[0],
@@ -50,6 +43,9 @@ export default () => {
 
   const [textInput, setTextInput] = useState("");
   const [textOutput, setTextOutput] = useState("");
+  const [speechSynthesisLangs, setSpeechSynthesisLangs] = useState<string[]>(
+    [],
+  );
   const [translationParams, setTranslationParams] = useState<TranslationParams>(
     defaultTranslationParams,
   );
@@ -92,10 +88,51 @@ export default () => {
   };
 
   useEffect(() => {
+    setDefaultSpeechSynthesisParams((prev) => {
+      return {
+        ...prev,
+        lang: speechSynthesisLangs.includes(prev.lang)
+          ? prev.lang
+          : (speechSynthesisLangs[0] ?? ""),
+      };
+    });
+    setSpeechSynthesisParams((prev) => {
+      return {
+        ...prev,
+        lang: speechSynthesisLangs.includes(prev.lang)
+          ? prev.lang
+          : (speechSynthesisLangs[0] ?? ""),
+      };
+    });
+  }, [speechSynthesisLangs]);
+
+  useEffect(() => {
     return () => {
       handleCancelRead();
     };
   }, [handleCancelRead]);
+
+  useEffect(() => {
+    const speechSynthesis = window.speechSynthesis;
+
+    const updateVoices = () => {
+      setSpeechSynthesisLangs([
+        ...new Set(
+          speechSynthesis
+            .getVoices()
+            .map((v) => v.lang)
+            .toSorted(),
+        ),
+      ]);
+    };
+
+    updateVoices();
+    speechSynthesis.addEventListener("voiceschanged", updateVoices);
+
+    return () => {
+      speechSynthesis.removeEventListener("voiceschanged", updateVoices);
+    };
+  }, []);
 
   return (
     <div className="flex-1 flex flex-col md:flex-row justify-evenly items-center gap-9">
