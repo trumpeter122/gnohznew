@@ -40,7 +40,7 @@ For better readability, words are separated with spaces as is often done in alph
 
 Though spelled backwards, it is recommended to preserve the tones of the syllables while speaking, in order to achive better understandability.
 
-There is no fixed pronunciation rule for Gnohznew. Often times, speakers would adopted rules from other languages. These different pronunciations of Gnohznew are referred to as __*dialects*__. Below is an example from Leslie, one of the founders of Gnohznew.
+There is no fixed pronunciation rule for Gnohznew. Often times, speakers would adopt rules from other languages. These different pronunciations of Gnohznew are referred to as __*dialects*__. Below is an example from Leslie, one of the founders of Gnohznew.
 
 > ### Gnohznew 的发音规则
 >
