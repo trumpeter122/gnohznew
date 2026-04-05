@@ -14,8 +14,8 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 
-import type { ToneType } from "@/lib/translaton";
-import { getGnohznewFromChinese, toneTypes } from "@/lib/translaton";
+import type { ToneType } from "@/lib/translation";
+import { getGnohznewFromChinese, toneTypes } from "@/lib/translation";
 
 type TranslationParams = {
   toneType: ToneType;
