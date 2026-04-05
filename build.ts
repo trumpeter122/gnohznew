@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 import plugin from "bun-plugin-tailwind";
 import { existsSync } from "fs";
-import { rm } from "fs/promises";
+import { cp, rm } from "fs/promises";
 import path from "path";
 
 if (process.argv.includes("--help") || process.argv.includes("-h")) {
@@ -134,6 +134,12 @@ const result = await Bun.build({
   },
   ...cliConfig,
 });
+
+const publicDir = path.join(process.cwd(), "public");
+if (existsSync(publicDir)) {
+  console.log(`📦 Copying static assets from ${publicDir}`);
+  await cp(publicDir, path.join(outdir, "public"), { recursive: true });
+}
 
 const end = performance.now();
 
