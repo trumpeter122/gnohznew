@@ -1,4 +1,3 @@
-import { pinyin } from "pinyin-pro";
 import { useCallback, useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Button } from "@/components/ui/button";
@@ -15,8 +14,8 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 
-const toneTypes = ["none", "symbol", "num"] as const;
-type ToneType = (typeof toneTypes)[number];
+import type { ToneType } from "@/lib/translaton";
+import { getGnohznewFromChinese, toneTypes } from "@/lib/translaton";
 
 type TranslationParams = {
   toneType: ToneType;
@@ -27,35 +26,6 @@ type SpeechSynthesisParams = {
   volume: number;
   rate: number;
   pitch: number;
-};
-
-const toGnohznew = (textChinese: string, toneType: ToneType) => {
-  const toTokens = (textChinese: string): string[] => {
-    // const tokens = new TinySegmenter().segment(textChinese);
-    const segmenter = new Intl.Segmenter("zh-CN", { granularity: "word" });
-    const tokens = [
-      ...segmenter
-        .segment(textChinese)
-        [Symbol.iterator]()
-        .map((s) => s.segment as string),
-    ];
-    return tokens;
-  };
-
-  const toPinyins = (textChinese: string, toneType: ToneType) => {
-    const pinyins = pinyin(textChinese, {
-      toneType: toneType,
-      type: "array",
-    });
-    return pinyins;
-  };
-
-  const toReverse = (pinyins: string[]) =>
-    pinyins.map((pinyin) => pinyin.split("").reverse().join("")).join("");
-
-  return toTokens(textChinese)
-    .map((t) => toReverse(toPinyins(t, toneType)))
-    .join(" ");
 };
 
 export default () => {
@@ -106,7 +76,9 @@ export default () => {
   }, []);
 
   const handleTranslate = () => {
-    setTextOutput(toGnohznew(textInput, translationParams.toneType));
+    setTextOutput(
+      getGnohznewFromChinese(textInput, translationParams.toneType),
+    );
   };
 
   const handleReset = () => {
