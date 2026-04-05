@@ -126,7 +126,7 @@ export default () => {
   }, [handleCancelRead]);
 
   return (
-    <div className="flex-1 flex flex-col md:flex-row justify-evenly items-start md:items-center gap-9">
+    <div className="flex-1 flex flex-col md:flex-row justify-evenly items-center gap-9">
       <Textarea
         className="h-50 md:h-150 bg-secondary"
         placeholder="Input: Chinese"
