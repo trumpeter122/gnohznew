@@ -17,6 +17,8 @@ import { Textarea } from "@/components/ui/textarea";
 import type { ToneType } from "@/lib/translation";
 import { getGnohznewFromChinese, toneTypes } from "@/lib/translation";
 
+const speechSynthesisLangFallback = "";
+
 type TranslationParams = {
   toneType: ToneType;
   separator: string;
@@ -42,7 +44,7 @@ export default () => {
   );
   const [defaultSpeechSynthesisParams, setDefaultSpeechSynthesisParams] =
     useState({
-      lang: "",
+      lang: speechSynthesisLangFallback,
       volume: 1,
       rate: 1,
       pitch: 1,
@@ -54,6 +56,49 @@ export default () => {
     useState<SpeechSynthesisParams>(defaultSpeechSynthesisParams);
   const [isReading, setIsReading] = useState(false);
   const isMd = useMediaQuery({ minWidth: 768 });
+
+  const handleCancelRead = useCallback(() => {
+    window.speechSynthesis.cancel();
+  }, []);
+
+  const handleVoicesUpdate = useCallback(() => {
+    const availableLangs = [
+      ...new Set(
+        window.speechSynthesis
+          .getVoices()
+          .map((v) => v.lang)
+          .toSorted(),
+      ),
+    ];
+
+    setSpeechSynthesisLangs(availableLangs);
+    setDefaultSpeechSynthesisParams((prev) => {
+      return {
+        ...prev,
+        lang: availableLangs.includes(prev.lang)
+          ? prev.lang
+          : (availableLangs[0] ?? speechSynthesisLangFallback),
+      };
+    });
+    setSpeechSynthesisParams((prev) => {
+      return {
+        ...prev,
+        lang: availableLangs.includes(prev.lang)
+          ? prev.lang
+          : (availableLangs[0] ?? speechSynthesisLangFallback),
+      };
+    });
+  }, []);
+
+  const handleClear = () => {
+    setTextInput("");
+    setTextOutput("");
+  };
+
+  const handleReset = () => {
+    setTranslationParams(defaultTranslationParams);
+    setSpeechSynthesisParams(defaultSpeechSynthesisParams);
+  };
 
   const handleStartRead = () => {
     const utterance = new SpeechSynthesisUtterance(textOutput);
@@ -68,10 +113,6 @@ export default () => {
     window.speechSynthesis.speak(utterance);
   };
 
-  const handleCancelRead = useCallback(() => {
-    window.speechSynthesis.cancel();
-  }, []);
-
   const handleTranslate = () => {
     setTextOutput(
       getGnohznewFromChinese(
@@ -82,35 +123,6 @@ export default () => {
     );
   };
 
-  const handleReset = () => {
-    setTranslationParams(defaultTranslationParams);
-    setSpeechSynthesisParams(defaultSpeechSynthesisParams);
-  };
-
-  const handleClear = () => {
-    setTextInput("");
-    setTextOutput("");
-  };
-
-  useEffect(() => {
-    setDefaultSpeechSynthesisParams((prev) => {
-      return {
-        ...prev,
-        lang: speechSynthesisLangs.includes(prev.lang)
-          ? prev.lang
-          : (speechSynthesisLangs[0] ?? ""),
-      };
-    });
-    setSpeechSynthesisParams((prev) => {
-      return {
-        ...prev,
-        lang: speechSynthesisLangs.includes(prev.lang)
-          ? prev.lang
-          : (speechSynthesisLangs[0] ?? ""),
-      };
-    });
-  }, [speechSynthesisLangs]);
-
   useEffect(() => {
     return () => {
       handleCancelRead();
@@ -120,24 +132,13 @@ export default () => {
   useEffect(() => {
     const speechSynthesis = window.speechSynthesis;
 
-    const updateVoices = () => {
-      setSpeechSynthesisLangs([
-        ...new Set(
-          speechSynthesis
-            .getVoices()
-            .map((v) => v.lang)
-            .toSorted(),
-        ),
-      ]);
-    };
-
-    updateVoices();
-    speechSynthesis.addEventListener("voiceschanged", updateVoices);
+    handleVoicesUpdate();
+    speechSynthesis.addEventListener("voiceschanged", handleVoicesUpdate);
 
     return () => {
-      speechSynthesis.removeEventListener("voiceschanged", updateVoices);
+      speechSynthesis.removeEventListener("voiceschanged", handleVoicesUpdate);
     };
-  }, []);
+  }, [handleVoicesUpdate]);
 
   return (
     <div className="flex-1 flex flex-col md:flex-row justify-evenly items-center gap-9">
